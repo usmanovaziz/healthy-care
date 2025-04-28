@@ -1,0 +1,125 @@
+version: '3.9'
+
+services:
+  api-gateway-service:
+    build: ./api-gateway
+    ports:
+      - "8079:8079"
+    depends_on:
+      - auth-service
+      - user-profile-service
+      - mood-tracker-service
+      - challenge-service
+      - reward-service
+      - notification-service
+      - analytics-service
+      - therapist-service
+
+  auth-service:
+    build: ./auth-service
+    ports:
+      - "8080:8080"
+    depends_on:
+      - postgres
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://postgres:5432/health-care
+      - SPRING_DATASOURCE_USERNAME=postgres
+      - SPRING_DATASOURCE_PASSWORD=postgres
+
+  user-profile-service:
+    build: ./user-profile-service
+    ports:
+      - "8081:8081"
+    depends_on:
+      - postgres
+      - auth-service
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://postgres:5432/health-care
+      - SPRING_DATASOURCE_USERNAME=postgres
+      - SPRING_DATASOURCE_PASSWORD=postgres
+      -
+  challenge-service:
+    build: ./challenge-service
+    ports:
+      - "8082:8082"
+    depends_on:
+      - postgres
+
+  mood-tracker-service:
+    build: ./mood-tracker-service
+    ports:
+      - "8083:8083"
+    depends_on:
+      - mongo
+      - auth-service
+    environment:
+      - SPRING_DATA_MONGODB_URI=mongodb://mongodb:27017/moodtracker
+
+  notification-service:
+    build: ./notification-service
+    ports:
+      - "8084:8084"
+    depends_on:
+      - rabbitmq
+
+
+  reward-service:
+    build: ./reward-service
+    ports:
+      - "8085:8085"
+    depends_on:
+      - postgres
+      - redis
+
+  therapist-service:
+    build: ./therapist-service
+    ports:
+      - "8086:8086"
+    depends_on:
+      - postgres
+      - auth-service
+
+  analytics-service:
+    build: ./analytics-service
+    ports:
+      - "8087:8087"
+    depends_on:
+      - mongodb
+      - clickhouse
+
+  postgres:
+    image: postgres
+    container_name: postgres
+    restart: always
+    ports:
+      - "5432:5432"
+
+  mongodb:
+    image: mongo:6
+    container_name: mongodb
+    restart: always
+    ports:
+      - "27017:27017"
+
+  redis:
+    image: redis:7
+    container_name: redis
+    restart: always
+    ports:
+      - "6379:6379"
+
+  rabbitmq:
+    image: rabbitmq:3-management
+    container_name: rabbitmq
+    restart: always
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+
+  clickhouse:
+    image: clickhouse/clickhouse-server:latest
+    container_name: clickhouse
+    restart: always
+    ports:
+      - "8123:8123"
+      - "9000:9000"

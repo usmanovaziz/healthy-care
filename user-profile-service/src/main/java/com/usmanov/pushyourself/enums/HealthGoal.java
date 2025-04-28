@@ -1,0 +1,13 @@
+package com.usmanov.pushyourself.enums;
+
+public enum HealthGoal {
+    WEIGHT_LOSS,
+    STRENGTH_BUILDING,
+    CARDIOVASCULAR_HEALTH,
+    FLEXIBILITY,
+    STRESS_MANAGEMENT,
+    MENTAL_HEALTH,
+    SLEEP_IMPROVEMENT,
+    DIABETES_PREVENTION,
+    GENERAL_WELLNESS
+}
