@@ -70,6 +70,18 @@ public class UserProfileServiceImpl implements UserProfileService {
     }
 
     @Override
+    public Optional<UserProfile> getByPhoneNumber(String phoneNumber) {
+        Optional<UserProfile> opt = userProfileRepository.
+                findTopByPhoneNumber(phoneNumber);
+
+        if (opt.isEmpty()) {
+            throw new UserNotFoundException();
+        }
+
+        return opt;
+    }
+
+    @Override
     public Integer getSessionCount(UUID userId) {
         return userProfileRepository.findById(userId)
                 .map(UserProfile::getSessionCount)

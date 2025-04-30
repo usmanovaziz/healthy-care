@@ -1,14 +1,14 @@
 package com.usmanov.pushyourself.entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import com.usmanov.pushyourself.enums.Channel;
+import com.usmanov.pushyourself.enums.NotificationType;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
 
+import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.UUID;
 
@@ -16,7 +16,7 @@ import java.util.UUID;
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
-public class Notification {
+public class NotificationEvent implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
@@ -24,11 +24,17 @@ public class Notification {
 
     private UUID userId;
 
-    private String channel;
+    @Enumerated(EnumType.STRING)
+    private Channel channel;
+
+    @Enumerated(EnumType.STRING)
+    private NotificationType notificationType;
 
     private String title;
 
     private String body;
+
+    private String recipient;
 
     private LocalDate scheduledDate;
 

@@ -19,6 +19,8 @@ public interface UserProfileService {
 
     void setHealthGoal(UUID userId, HealthGoal goal);
 
+    Optional<UserProfile> getByPhoneNumber(String phoneNumber);
+
     Integer getSessionCount(UUID userId);
 
     void setNotificationPreferences(UUID userId, NotificationPreference preference);

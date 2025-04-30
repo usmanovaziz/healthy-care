@@ -31,6 +31,12 @@ public class UserProfile {
 
     private Integer age;
 
+    @Column(unique = true)
+    private String phoneNumber;
+
+    @Column(unique = true)
+    private String email;
+
     @Enumerated(EnumType.STRING)
     private Gender gender;
 
